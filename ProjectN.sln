@@ -32,13 +32,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectN.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectN.Api", "ProjectN.Api\ProjectN.Api.csproj", "{6B33AF98-E0ED-4F29-B4ED-237D25713F31}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{3D197D49-570E-45FC-BC65-4F6D4133C02A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{D6AE5517-4034-4B9F-A4A8-E4077EB88013}"
-	ProjectSection(SolutionItems) = preProject
-		build-and-deploy.yml = build-and-deploy.yml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,8 +72,6 @@ Global
 		{74D90CD6-BB85-44AA-9D2D-C50B75D9E83C} = {F710032A-0387-4EAE-A79B-1DE18C10852F}
 		{F58C5736-12F1-4B6E-99ED-7A5822CA55C4} = {F710032A-0387-4EAE-A79B-1DE18C10852F}
 		{6B33AF98-E0ED-4F29-B4ED-237D25713F31} = {EE7F4A91-13B8-4529-BE21-10D96788D3FA}
-		{3D197D49-570E-45FC-BC65-4F6D4133C02A} = {EE7F4A91-13B8-4529-BE21-10D96788D3FA}
-		{D6AE5517-4034-4B9F-A4A8-E4077EB88013} = {3D197D49-570E-45FC-BC65-4F6D4133C02A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47BD482F-C1E0-480E-A85B-487C5F319F1D}
