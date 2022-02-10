@@ -10,11 +10,9 @@ env:
 
 jobs:
   build:
-    name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
    - uses: actions/checkout@v2
-
    - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
      uses: actions/setup-dotnet@v1
      with:
