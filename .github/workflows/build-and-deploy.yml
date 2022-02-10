@@ -10,7 +10,7 @@ env:
 
 jobs:
   build:
-    name: main_projectnapi
+    name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
    - uses: actions/checkout@v2
