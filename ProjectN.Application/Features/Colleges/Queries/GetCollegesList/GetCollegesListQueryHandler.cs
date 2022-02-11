@@ -24,14 +24,11 @@ namespace ProjectN.Application.Features.Colleges.Queries.GetCollegesList
         public async Task<List<CollegeListVm>> Handle(GetCollegesListQuery request, CancellationToken cancellationToken)
         {
             var allColleges = await _collegeRepositiry.ListAllAsync();
-            try
-            {
+            
+            
                 return _mapper.Map<List<CollegeListVm>>(allColleges);
-            }
-            catch(Exception e)
-            {
-                throw;
-            }
+            
+           
 
         }
     }
