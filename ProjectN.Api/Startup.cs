@@ -6,12 +6,17 @@ using Microsoft.Extensions.Hosting;
 using ProjectN.Application;
 using ProjectN.Infrastructure;
 using ProjectN.Persistance;
+using ProjectN.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using ProjectN.Api.Utility;
+using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ProjectN.Api
 {
@@ -32,18 +37,67 @@ namespace ProjectN.Api
             services.AddApplicationServices();
             services.AddInfrastructureServices(Configuration);
             services.AddPersistanceServices(Configuration);
+            services.AddIdentityServices(Configuration);
+
+            services.Configure<ProjectNDbContext>(o => {
+                o.Database.Migrate();
+                }
+                );
             services.AddControllers();
             services.AddCors(options =>
             {
                 options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
+
+
+            //   services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(); Added in the AddIdentityServices instead of here
+            //services.AddAuthorization(options =>
+            //{
+            //    var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(
+            //        JwtBearerDefaults.AuthenticationScheme);
+
+            //    defaultAuthorizationPolicyBuilder =
+            //        defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
+
+            //    options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+            //});
+
+
         }
 
         private void AddSwagger(IServiceCollection services)
         {
             services.AddSwaggerGen( c =>
             {
-            c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                  {
+                    {
+                      new OpenApiSecurityScheme
+                      {
+                        Reference = new OpenApiReference
+                          {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                          },
+                          Scheme = "oauth2",
+                          Name = "Bearer",
+                          In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                      }
+                    });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 { 
                     Version = "v1",
                     Title = "College Management API"
@@ -62,14 +116,19 @@ namespace ProjectN.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseRouting();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "College Management API");
             });
-
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthentication();
+          
+            app.UseAuthorization();
+            //serviceProvider.GetService<ApplicationDbContext>().Database.EnsureCreated();
+           
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
