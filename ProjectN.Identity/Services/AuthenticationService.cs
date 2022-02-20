@@ -60,21 +60,7 @@ namespace ProjectN.Identity.Services
 
         public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
         {
-           
-            try
-            {
-                var existingUser = await _userManager.FindByNameAsync(request.UserName);
-            }
-            catch (Exception ex)
-            {
-                //if (existingUser != null)
-                //{
-                //    throw new Exception($"Username '{request.UserName}' already exists.");
-                //}
-            }
-
-           
-
+            var existingUser = await _userManager.FindByNameAsync(request.UserName);
             var user = new ApplicationUser
             {
                 Email = request.Email,
