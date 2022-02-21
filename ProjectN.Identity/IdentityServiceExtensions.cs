@@ -25,20 +25,17 @@ namespace ProjectN.Identity
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
             string connectionString = configuration.GetValue<string>("AppConfigConnectionString");
-            //     var keyVaultUrl = "https://projectn-keyvault.vault.azure.net/";
-            ////     var credential = new DefaultAzureCredential();
-            //     var credential = new ClientSecretCredential(
-            //                     "AZURE_TENANT_ID",  // use value from "tenant"
-            //                     "AZURE_CLIENT_ID", //  use value from "appId"
-            //                     "AZURE_CLIENT_SECRET" // use value from "password"
-            //                     );
-            //     var client = new SecretClient(vaultUri: new Uri(keyVaultUrl), credential);
-            //     KeyVaultSecret secret = client.GetSecret("ProjectNDbConnectionString");
+      
+            services.AddDbContext<ProjectNIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString,
+                  sqlServerOptionsAction: sqlOptions =>
+                  {
+                      sqlOptions.EnableRetryOnFailure();
+                  });
+            });
 
-            //services.AddDbContext<ProjectNIdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(connectionString),
-            //    b => b.MigrationsAssembly(typeof(ProjectNIdentityDbContext).Assembly.FullName)));
-            services.AddDbContext<ProjectNIdentityDbContext>(options => options.UseSqlServer(connectionString,
-              b => b.MigrationsAssembly(typeof(ProjectNIdentityDbContext).Assembly.FullName)));
+
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ProjectNIdentityDbContext>().AddDefaultTokenProviders();

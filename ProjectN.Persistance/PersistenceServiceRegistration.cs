@@ -28,8 +28,18 @@ namespace ProjectN.Persistance
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetValue<string>("AppConfigConnectionString");
+  
             services.AddDbContext<ProjectNDbContext>(options =>
-                  options.UseSqlServer(connectionString));
+            {
+                options.UseSqlServer(connectionString,
+                  sqlServerOptionsAction: sqlOptions =>
+                  {
+                      sqlOptions.EnableRetryOnFailure();
+                  });
+            });
+
+
+
             services.AddScoped(typeof(IAsyncRepository<>),typeof(BaseRepository<>));
 
             services.AddScoped<ICollegeRepository, CollegeRepository>();
