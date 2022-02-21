@@ -10,14 +10,26 @@ using Microsoft.EntityFrameworkCore;
 using ProjectN.Application.Contracts.Persistance;
 using ProjectN.Persistance.Repositories;
 
+
+using ProjectN.Application.Contracts.Identity;
+using ProjectN.Application.Models.Authentication;
+
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+
+
 namespace ProjectN.Persistance
 {
     public static class PersistenceServiceRegistration
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration configuration)
         {
+            var connectionString = configuration.GetValue<string>("AppConfigConnectionString");
             services.AddDbContext<ProjectNDbContext>(options =>
-                  options.UseSqlServer(configuration.GetConnectionString("ProjectNConnectionString")));
+                  options.UseSqlServer(connectionString));
             services.AddScoped(typeof(IAsyncRepository<>),typeof(BaseRepository<>));
 
             services.AddScoped<ICollegeRepository, CollegeRepository>();

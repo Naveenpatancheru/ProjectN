@@ -20,7 +20,14 @@ namespace ProjectN.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                    .ConfigureAppConfiguration( config =>
+                    {
+                        var settings = config.Build();
+                        var connection = settings.GetValue<string>("ProjectN:ConnectionString");
+                        config.AddAzureAppConfiguration(connection);
+                    })
+                    .UseStartup<Startup>();
                 });
     }
 }
