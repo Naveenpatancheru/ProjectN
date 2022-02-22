@@ -24,16 +24,20 @@ namespace ProjectN.Identity
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
-            string connectionString = configuration.GetValue<string>("AppConfigConnectionString");
-      
-            services.AddDbContext<ProjectNIdentityDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString,
-                  sqlServerOptionsAction: sqlOptions =>
-                  {
-                      sqlOptions.EnableRetryOnFailure();
-                  });
-            });
+            //string connectionString = configuration.GetValue<string>("AppConfigConnectionString");
+
+            //services.AddDbContext<ProjectNIdentityDbContext>(options =>
+            //{
+            //    options.UseSqlServer(connectionString,
+            //      sqlServerOptionsAction: sqlOptions =>
+            //      {
+            //          sqlOptions.EnableRetryOnFailure();
+            //      });
+            //});
+
+            services.AddDbContext<ProjectNIdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ProjectNConnectionString"),
+             b => b.MigrationsAssembly(typeof(ProjectNIdentityDbContext).Assembly.FullName)));
+
 
 
 
