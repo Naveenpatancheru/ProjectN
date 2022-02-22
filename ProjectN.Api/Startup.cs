@@ -22,9 +22,6 @@ namespace ProjectN.Api
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        // Sample
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,6 +30,7 @@ namespace ProjectN.Api
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
             AddSwagger(services);
             services.AddAzureAppConfiguration();
             services.AddApplicationServices();
@@ -49,21 +47,6 @@ namespace ProjectN.Api
             {
                 options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
-
-
-            //   services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(); Added in the AddIdentityServices instead of here
-            //services.AddAuthorization(options =>
-            //{
-            //    var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(
-            //        JwtBearerDefaults.AuthenticationScheme);
-
-            //    defaultAuthorizationPolicyBuilder =
-            //        defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
-
-            //    options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
-            //});
-
-
         }
 
         private void AddSwagger(IServiceCollection services)
@@ -125,19 +108,11 @@ namespace ProjectN.Api
             });
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseAuthentication();
-          
+            app.UseAuthentication();          
             app.UseAuthorization();
-            //serviceProvider.GetService<ApplicationDbContext>().Database.EnsureCreated();
-           
-           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //endpoints.MapGet("/", async context =>
-                //{
-                //    await context.Response.WriteAsync("Hello World!");
-                //});
             });
         }
     }
