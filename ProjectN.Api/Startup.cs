@@ -30,7 +30,7 @@ namespace ProjectN.Api
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry();
+           
             AddSwagger(services);
             services.AddAzureAppConfiguration();
             services.AddApplicationServices();
@@ -47,6 +47,7 @@ namespace ProjectN.Api
             {
                 options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
+            services.AddApplicationInsightsTelemetry();
         }
 
         private void AddSwagger(IServiceCollection services)
