@@ -27,20 +27,20 @@ namespace ProjectN.Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetValue<string>("AppConfigConnectionString");
-  
+            //  var connectionString = configuration.GetValue<string>("AppConfigConnectionString");
+
+            //services.AddDbContext<ProjectNDbContext>(options =>
+            //{
+            //    options.UseSqlServer(connectionString,
+            //      sqlServerOptionsAction: sqlOptions =>
+            //      {
+            //          sqlOptions.EnableRetryOnFailure();
+            //      });
+            //});
+
             services.AddDbContext<ProjectNDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString,
-                  sqlServerOptionsAction: sqlOptions =>
-                  {
-                      sqlOptions.EnableRetryOnFailure();
-                  });
-            });
-
-
-
-            services.AddScoped(typeof(IAsyncRepository<>),typeof(BaseRepository<>));
+                 options.UseSqlServer(configuration.GetConnectionString("ProjectNConnectionString")));
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
 
             services.AddScoped<ICollegeRepository, CollegeRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();

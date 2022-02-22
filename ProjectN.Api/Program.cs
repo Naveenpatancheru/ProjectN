@@ -21,12 +21,12 @@ namespace ProjectN.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
-                    .ConfigureAppConfiguration( config =>
-                    {
-                        var settings = config.Build();
-                        var connection = settings.GetValue<string>("ProjectN:ConnectionString");
-                        config.AddAzureAppConfiguration(connection);
-                    })
+                    //.ConfigureAppConfiguration( config =>
+                    //{
+                    //    var settings = config.Build();
+                    //    var connection = settings.GetValue<string>("ProjectN:ConnectionString");
+                    //    config.AddAzureAppConfiguration(connection);
+                    //})
                     .UseStartup<Startup>();
                 });
     }
