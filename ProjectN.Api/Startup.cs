@@ -102,7 +102,7 @@ namespace ProjectN.Api
                 app.UseDeveloperExceptionPage();
             }
             app.UseSwagger();
-            app.UseAzureAppConfiguration();
+           
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "College Management API");
